@@ -1,0 +1,4 @@
+node_modules/
+school.db
+school.db-journal
+.env

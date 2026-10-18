@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniLearn - Student Portal</title>
+  <style>
+:root {
+  --bg: #edf4ff;
+  --panel: #ffffff;
+  --panel-soft: #f5f8ff;
+  --primary: #4c6fff;
+  --primary-dark: #2d4fe0;
+  --text: #1d2433;
+  --muted: #74829b;
+  --line: #e8edf5;
+  --success: #2bb673;
+  --warning: #f4b942;
+  --danger: #eb5a5a;
+  --purple: #7b61ff;
+  --blue-soft: #eaf1ff;
+  --green-soft: #eafaf1;
+  --purple-soft: #f2ecff;
+  --shadow: 0 18px 40px rgba(31, 41, 55, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #edf4ff 0%, #f6f8fd 100%);
+  color: var(--text);
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+}
+
+button, input {
+  font: inherit;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 100%;
+  height: calc(100vh - 24px);
+  min-height: 0;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  overflow: hidden;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, #111827 0%, #1d2433 100%);
+  color: white;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6ca0ff, #6b5ef5);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: white;
+  box-shadow: 0 12px 24px rgba(108, 160, 255, 0.3);
+}
+
+.brand h2 {
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.brand p {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.nav-item.active {
+  background: rgba(76, 111, 255, 0.2);
+  color: #7aa5ff;
+}
+
+.mini-card {
+  margin-top: auto;
+  background: linear-gradient(135deg, #1d2c4d 0%, #172133 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: 0 18px 28px rgba(0, 0, 0, 0.16);
+  transition: 0.25s ease;
+}
+
+.mini-card:hover {
+  transform: translateY(-4px);
+}
+
+.mini-card .label {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.mini-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+  color: white;
+}
+
+.mini-card span {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+}
+
+.main-content {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.topbar h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 1.1rem;
+}
+
+.icon-btn:hover {
+  background: var(--panel-soft);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5f7bff, #8a62ff);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.avatar.small {
+  width: 28px;
+  height: 28px;
+  font-size: 0.65rem;
+}
+
+.profile strong {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.profile small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 10px 20px rgba(14, 25, 69, 0.03);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(76, 111, 255, 0.1);
+}
+
+.stat-card p {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-bottom: 8px;
+}
+
+.stat-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.trend {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.trend.up {
+  background: var(--green-soft);
+  color: var(--success);
+}
+
+.trend.danger {
+  background: rgba(235, 90, 90, 0.08);
+  color: var(--danger);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 20px rgba(24, 35, 56, 0.02);
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.panel-header h2 {
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.panel-header a {
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.panel-header a:hover {
+  color: var(--primary-dark);
+}
+
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.course-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: #f9fbff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.course-item:hover {
+  background: var(--panel-soft);
+  transform: translateX(3px);
+}
+
+.course-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.course-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.65rem;
+}
+
+.course-badge.blue {
+  background: var(--blue-soft);
+  color: var(--primary);
+}
+
+.course-badge.purple {
+  background: var(--purple-soft);
+  color: var(--purple);
+}
+
+.course-badge.green {
+  background: var(--green-soft);
+  color: var(--success);
+}
+
+.course-info h3 {
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+  color: var(--text);
+}
+
+.course-info small {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.course-meta {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.course-meta span {
+  display: inline-block;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 0.8rem;
+}
+
+.progress {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #edf2fa;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #75a7ff 0%, #4c6fff 100%);
+}
+
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f9fbff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.task-list li:hover {
+  background: var(--panel-soft);
+}
+
+.task-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.task-dot.red { background: var(--danger); }
+.task-dot.yellow { background: var(--warning); }
+.task-dot.green { background: var(--success); }
+
+.task-list strong {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.task-list small {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 12px;
+  min-height: 0;
+  flex: 1;
+}
+
+.panel-wide {
+  min-height: 0;
+}
+
+.chart-area {
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: end;
+}
+
+.bars {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--line);
+  gap: 12px;
+  padding: 0 8px;
+}
+
+.bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  height: 100%;
+}
+
+.bar {
+  width: 100%;
+  max-width: 35px;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(180deg, #a9c3ff 0%, #4c6fff 100%);
+}
+
+.bar-group label {
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.online {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(43, 182, 115, 0.1);
+  border-radius: 999px;
+  color: var(--success);
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.online::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.chat-window {
+  flex: 1;
+  min-height: 120px;
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 6px;
+  margin-bottom: 8px;
+}
+
+.message {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.user .bubble {
+  background: linear-gradient(135deg, #5a7bff, #4364f4);
+  color: white;
+  border-radius: 16px 16px 4px 16px;
+}
+
+.message.bot .bubble {
+  background: #f3f6fb;
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 16px 16px 16px 4px;
+}
+
+.bubble {
+  max-width: 80%;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.chip {
+  background: #eef4ff;
+  border: 1px solid #dfeafc;
+  color: var(--primary);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.chip:hover {
+  background: #dfeaff;
+}
+
+.chat-form {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.chat-form input {
+  flex: 1;
+  border: 1px solid var(--line);
+  background: #f9fbff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.chat-form input:focus {
+  border-color: var(--primary);
+}
+
+.chat-form button {
+  background: linear-gradient(135deg, #4c6fff, #3a5ef2);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.chat-form button:hover {
+  transform: translateY(-1px);
+}
+
+/* MODAL STYLES */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-backdrop.show {
+  display: block;
+}
+
+.modal-content {
+  position: fixed;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  max-height: 85vh;
+  overflow-y: auto;
+  z-index: 1001;
+  width: min(780px, 90vw);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: white;
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-header h2 {
+  font-size: 1.4rem;
+  color: var(--text);
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: 0.2s ease;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: var(--text);
+  background: var(--panel-soft);
+  border-radius: 8px;
+}
+
+.modal-body {
+  padding: 24px;
+  color: var(--text);
+}
+
+/* Modal content styles */
+.schedule-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.schedule-day {
+  background: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.day-name {
+  margin-bottom: 10px;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.class-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.class-item:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.class-name {
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.class-location {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.class-time {
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.assessments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.assessment-card {
+  background: var(--panel-soft);
+  border-left: 4px solid var(--primary);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.assessment-card.urgent {
+  border-left-color: var(--danger);
+}
+
+.assessment-card.important {
+  border-left-color: var(--warning);
+}
+
+.assessment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.assessment-header h3 {
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.urgency-badge {
+  background: white;
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.assessment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.assessment-details div {
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.assessment-details strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat-box {
+  background: linear-gradient(135deg, #f5f8ff 0%, #eef3ff 100%);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.performance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.performance-card {
+  background: var(--panel-soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+
+.performance-card h4 {
+  color: var(--text);
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+}
+
+.grade {
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin: 6px 0;
+}
+
+.grade.excellent { color: var(--success); }
+.grade.good { color: var(--primary); }
+.grade.average { color: var(--warning); }
+.grade.poor { color: var(--danger); }
+
+.status {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-top: 6px;
+}
+
+.courses-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.course-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(76, 111, 255, 0.08);
+}
+
+.course-header {
+  height: 50px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 800;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}
+
+.course-header.blue {
+  background: linear-gradient(135deg, #7aa5ff, #4c6fff);
+}
+
+.course-header.purple {
+  background: linear-gradient(135deg, #c0b5ff, #7b61ff);
+}
+
+.course-header.green {
+  background: linear-gradient(135deg, #8fe7b7, #34b87b);
+}
+
+.course-card h3 {
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.course-prof {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
+.progress-text {
+  color: var(--primary);
+  font-weight: 700;
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+
+.course-credit {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #4c6fff, #3961ea);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: 0.2s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* FORMS IN MODALS */
+.add-form { display: flex; flex-direction: column; gap: 8px; background: #f8f9ff; border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+.add-form h3 { color: var(--navy); font-size: 1rem; }
+.add-form input, .add-form select { border: 1px solid var(--line); background: white; border-radius: 10px; padding: 9px 11px; outline: none; font: inherit; }
+.form-msg { color: var(--danger); font-size: 0.8rem; min-height: 1em; }
+.progress-edit { display: flex; gap: 8px; margin-top: 10px; align-items: flex-end; }
+.progress-edit label { display: flex; flex-direction: column; gap: 2px; font-size: 0.7rem; color: var(--muted); }
+.progress-edit input { width: 80px; border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; font: inherit; }
+.progress-edit .action-btn { min-width: 0; padding: 6px 12px; }
+.progress-edit .action-btn.danger { background: linear-gradient(135deg, #d75b5b, #b94343); }
+
+/* LOGIN */
+.login-screen { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #111827 0%, #2d4fe0 100%); }
+.login-screen[hidden] { display: none; }
+.login-card { width: min(360px, 90vw); background: white; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 12px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.login-card .brand-icon { margin: 0 auto; }
+.login-card p, .login-card small { color: var(--muted); font-size: 0.8rem; }
+.login-card input { border: 1px solid var(--line); background: #f9fbff; border-radius: 10px; padding: 10px 12px; outline: none; }
+.login-card input:focus { border-color: var(--primary); }
+.login-card[hidden] { display: none; }
+.link-btn { border: none; background: none; color: var(--primary); font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+.login-error { color: var(--danger); font-size: 0.8rem; min-height: 1em; }
+
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .content-grid,
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 95vw;
+    max-height: 90vh;
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- Main App Shell -->
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">U</div>
+        <div>
+          <h2>UniLearn</h2>
+          <p>Student Portal</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" onclick="openModal('dashboard')">
+          <span>📊</span> Dashboard
+        </button>
+        <button class="nav-item" onclick="openModal('courses')">
+          <span>📚</span> Courses
+        </button>
+        <button class="nav-item" onclick="openModal('tutor')">
+          <span>🤖</span> AI Tutor
+        </button>
+        <button class="nav-item" onclick="openModal('schedule')">
+          <span>📅</span> Schedule
+        </button>
+        <button class="nav-item" onclick="openModal('assessments')">
+          <span>✅</span> Assessments
+        </button>
+        <button class="nav-item" onclick="openModal('analytics')">
+          <span>📈</span> Analytics
+        </button>
+      </nav>
+
+      <div class="mini-card">
+        <div class="label">Study Streak</div>
+        <h3 id="streakDays"></h3>
+        <span>Keep it up! 🔥</span>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div>
+          <div class="eyebrow">Welcome back</div>
+          <h1 id="greeting">Good Evening</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn">🔔</button>
+          <button class="icon-btn" title="Log out" onclick="logout()">🚪</button>
+          <div class="profile">
+            <div class="avatar" id="profAvatar"></div>
+            <div>
+              <strong id="profName"></strong>
+              <small id="profProgram"></small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <!-- Content Grid -->
+      <div class="content-grid">
+        <!-- My Courses Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>My Courses</h2>
+            <a onclick="openModal('courses')">View all</a>
+          </div>
+          <div class="course-list" id="courseList"></div>
+        </div>
+
+        <!-- Upcoming Tasks Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Upcoming Tasks</h2>
+            <a onclick="openModal('assessments')">See calendar</a>
+          </div>
+          <ul class="task-list" id="taskList"></ul>
+        </div>
+      </div>
+
+      <!-- Bottom Grid -->
+      <div class="bottom-grid">
+        <!-- Study Overview Panel -->
+        <div class="panel panel-wide">
+          <div class="panel-header">
+            <h2>Study Overview</h2>
+            <a onclick="openModal('analytics')">Detailed report</a>
+          </div>
+          <div class="chart-area">
+            <div class="bars" id="weekBars"></div>
+          </div>
+        </div>
+
+        <!-- AI Tutor Panel -->
+        <div class="panel chat-panel">
+          <div class="panel-header">
+            <h2>AI Tutor</h2>
+            <span class="online">Online</span>
+          </div>
+          <div class="chat-window" id="chatWindow"></div>
+          <div class="quick-actions">
+            <div class="chip" onclick="addMessage(this.textContent, 'user')">Help me</div>
+            <div class="chip" onclick="addMessage(this.textContent, 'user')">Study tips</div>
+            <div class="chip" onclick="addMessage(this.textContent, 'user')">Quiz prep</div>
+          </div>
+          <form class="chat-form" id="chatForm" onsubmit="handleChatSubmit(event)">
+            <input type="text" id="chatInput" placeholder="Ask me..." required>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Login -->
+  <div class="login-screen" id="loginScreen" hidden>
+    <form class="login-card" id="loginForm">
+      <div class="brand-icon">U</div>
+      <h2>UniLearn</h2>
+      <p>Sign in to your student portal</p>
+      <input id="loginUser" placeholder="Username" required autocomplete="username">
+      <input id="loginPass" type="password" placeholder="Password" required autocomplete="current-password">
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="action-btn">Sign in</button>
+      <small>Demo: mark / password123 &nbsp;•&nbsp; juan / password123</small>
+      <button type="button" class="link-btn" id="showRegister">No account yet? Create one</button>
+    </form>
+    <form class="login-card" id="registerForm" hidden>
+      <div class="brand-icon">U</div>
+      <h2>Create account</h2>
+      <p>Register as a new student</p>
+      <input id="regName" placeholder="Full name" required autocomplete="name">
+      <input id="regProgram" placeholder="Program (e.g. CompSci)">
+      <input id="regUser" placeholder="Username (letters, numbers, _)" required autocomplete="username">
+      <input id="regPass" type="password" placeholder="Password (min 6 characters)" required autocomplete="new-password">
+      <div class="login-error" id="regError"></div>
+      <button type="submit" class="action-btn">Create account</button>
+      <button type="button" class="link-btn" id="showLogin">Back to sign in</button>
+    </form>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+    <div class="modal-content" id="modalContent" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h2 id="modalTitle">Modal Title</h2>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+// ===========================
+// MODAL SYSTEM
+// ===========================
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalBody = document.getElementById('modalBody');
+const modalTitle = document.getElementById('modalTitle');
+const modalContent = document.getElementById('modalContent');
+
+const modalContents = {
+  dashboard: {
+    title: '📊 Dashboard',
+    content: `<p style="font-size: 1.05rem; line-height: 1.8; color: var(--text);">Welcome to your personalized academic dashboard! Track your GPA, monitor course progress, manage assignments, and stay on top of your study schedule. Your AI tutor is ready to help! 🚀</p>`
+  },
+  
+  courses: {
+    title: '📚 My Courses',
+    content: `
+      <div class="courses-container">
+        <div class="course-card">
+          <div class="course-header blue">CS</div>
+          <h3>Calculus 2</h3>
+          <div class="course-prof">Dr. Rommel T. Dasalla</div>
+          <div class="progress"><div class="progress-bar" style="width: 82%;"></div></div>
+          <div class="progress-text">82% Complete</div>
+          <div class="course-credit">3 Credits • 16 weeks</div>
+        </div>
+        <div class="course-card">
+          <div class="course-header purple">AI</div>
+          <h3>ENGADS01</h3>
+          <div class="course-prof">Sir Jerry Sermeno</div>
+          <div class="progress"><div class="progress-bar" style="width: 74%;"></div></div>
+          <div class="progress-text">74% Complete</div>
+          <div class="course-credit">4 Credits • 16 weeks</div>
+        </div>
+        <div class="course-card">
+          <div class="course-header green">DB</div>
+          <h3>COEPRO01</h3>
+          <div class="course-prof">Sir Conrad Hidalgo</div>
+          <div class="progress"><div class="progress-bar" style="width: 91%;"></div></div>
+          <div class="progress-text">91% Complete</div>
+          <div class="course-credit">3 Credits • 16 weeks</div>
+        </div>
+      </div>
+    `
+  },
+  
+  schedule: {
+    title: '📅 Weekly Schedule',
+    content: `
+      <div class="schedule-container">
+        <div class="schedule-day">
+          <h3 class="day-name">Monday</h3>
+          <div class="class-item">
+            <div style="flex: 1;">
+              <div class="class-name">Data Structures</div>
+              <div class="class-location">🚩 Room 101</div>
+            </div>
+            <div class="class-time">09:00 - 10:30 AM</div>
+          </div>
+          <div class="class-item">
+            <div style="flex: 1;">
+              <div class="class-name">Database Systems</div>
+              <div class="class-location">🚩 Room 205</div>
+            </div>
+            <div class="class-time">11:00 AM - 12:30 PM</div>
+          </div>
+        </div>
+        <div class="schedule-day">
+          <h3 class="day-name">Tuesday</h3>
+          <div class="class-item">
+            <div style="flex: 1;">
+              <div class="class-name">AI & Machine Learning</div>
+              <div class="class-location">🚩 Room 301</div>
+            </div>
+            <div class="class-time">10:00 - 11:30 AM</div>
+          </div>
+          <div class="class-item">
+            <div style="flex: 1;">
+              <div class="class-name">Programming Lab</div>
+              <div class="class-location">🚩 Room 401</div>
+            </div>
+            <div class="class-time">02:00 - 03:30 PM</div>
+          </div>
+        </div>
+        <div class="schedule-day">
+          <h3 class="day-name">Wednesday</h3>
+          <div class="class-item">
+            <div style="flex: 1;">
+              <div class="class-name">Web Development</div>
+              <div class="class-location">🚩 Room 501</div>
+            </div>
+            <div class="class-time">09:30 - 11:00 AM</div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  
+  assessments: {
+    title: '✅ Assessments & Deadlines',
+    content: `
+      <div class="assessments-container">
+        <div class="assessment-card urgent">
+          <div class="assessment-header">
+            <h3>AI Project Proposal</h3>
+            <span class="urgency-badge">URGENT</span>
+          </div>
+          <div class="assessment-details">
+            <div><strong>Course:</strong> Artificial Intelligence</div>
+            <div><strong>Deadline:</strong> Today, 5:00 PM</div>
+            <div><strong>Status:</strong> Not Started</div>
+            <div><strong>Weight:</strong> 20%</div>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line);"><strong>0% Complete</strong></div>
+          </div>
+        </div>
+
+        <div class="assessment-card important">
+          <div class="assessment-header">
+            <h3>Algorithms Quiz</h3>
+            <span class="urgency-badge">THIS WEEK</span>
+          </div>
+          <div class="assessment-details">
+            <div><strong>Course:</strong> Data Structures</div>
+            <div><strong>Deadline:</strong> Tomorrow, 10:00 AM</div>
+            <div><strong>Duration:</strong> 60 minutes</div>
+            <div><strong>Questions:</strong> 25 (Multiple Choice + Short Answer)</div>
+            <div><strong>Topics:</strong> Sorting, Searching, Graphs</div>
+            <button class="action-btn" style="margin-top: 10px; width: 100%;">Take Quiz Now</button>
+          </div>
+        </div>
+
+        <div class="assessment-card">
+          <div class="assessment-header">
+            <h3>DB Lab Submission</h3>
+            <span class="urgency-badge">NEXT WEEK</span>
+          </div>
+          <div class="assessment-details">
+            <div><strong>Course:</strong> Database Systems</div>
+            <div><strong>Deadline:</strong> Friday, 11:59 PM</div>
+            <div><strong>Type:</strong> Lab Assignment</div>
+            <div><strong>Status:</strong> In Progress (60% Complete)</div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+  
+  analytics: {
+    title: '📈 Academic Analytics',
+    content: `
+      <div class="dashboard-stats">
+        <div class="stat-box">
+          <div class="stat-label">Current GPA</div>
+          <div class="stat-value" id="statGpa">3.88</div>
+          <div class="trend up" id="statGpaTrend">↑ +0.12</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Overall Progress</div>
+          <div class="stat-value" id="statProgress">80%</div>
+          <div class="trend up" id="statProgressTrend">↑ +5%</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Study Time</div>
+          <div class="stat-value" id="statStudy">18h</div>
+          <div class="trend up" id="statStudyTrend">↑ +4h</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Average Score</div>
+          <div class="stat-value" id="statAvg">87%</div>
+          <div class="trend up" id="statAvgTrend">↑ +3%</div>
+        </div>
+      </div>
+
+      <h3 style="margin: 16px 0 12px; color: var(--primary); font-size: 1.05rem;">📊 Course Performance</h3>
+      <div class="performance-grid" id="perfGrid"></div>
+    `
+  },
+  
+  tutor: {
+    title: '🤖 AI Tutor Help',
+    content: `
+      <p style="text-align: center; font-size: 1.05rem; line-height: 1.8; color: var(--text); margin-bottom: 20px;">I can help you with:</p>
+      <div style="max-width: 400px; margin: 0 auto;">
+        <div style="background: var(--panel-soft); padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--primary);">✅ Coursework and assignments</div>
+        <div style="background: var(--panel-soft); padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--primary);">📚 Study plans and tips</div>
+        <div style="background: var(--panel-soft); padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--primary);">🎯 Quiz preparation</div>
+        <div style="background: var(--panel-soft); padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--primary);">💡 Concept explanations</div>
+        <div style="background: var(--panel-soft); padding: 10px; border-radius: 8px; border-left: 3px solid var(--primary);">❓ Any academic questions</div>
+      </div>
+      <p style="text-align: center; color: var(--muted); margin-top: 20px; font-size: 0.9rem;">Use the chat below to start asking!</p>
+    `
+  }
+};
+
+// ===========================
+// BACKEND CONNECTION
+// ===========================
+async function loadAnalyticsStats() {
+  try {
+    const s = await getJSON('/api/student/stats');
+    document.getElementById('statGpa').textContent = s.gpa.toFixed(2);
+    document.getElementById('statGpaTrend').textContent = `↑ +${s.gpaChange}`;
+    document.getElementById('statProgress').textContent = `${s.progress}%`;
+    document.getElementById('statProgressTrend').textContent = `↑ +${s.progressChange}%`;
+    document.getElementById('statStudy').textContent = `${s.studyHours}h`;
+    document.getElementById('statStudyTrend').textContent = `↑ +${s.studyChange}h`;
+    document.getElementById('statAvg').textContent = `${s.avgScore}%`;
+    document.getElementById('statAvgTrend').textContent = `↑ +${s.avgChange}%`;
+  } catch (err) {
+    console.error('Failed to load stats:', err);
+  }
+}
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+async function getJSON(url) {
+  const res = await fetch(url);
+  if (res.status === 401) { showLogin(); throw new Error('Not logged in'); }
+  if (!res.ok) throw new Error('Server error ' + res.status);
+  return res.json();
+}
+
+function assessmentFormHTML() {
+  return `<form class="add-form" id="addAssessmentForm">
+    <h3>➕ Add Assessment</h3>
+    <input id="aTitle" placeholder="Title (e.g. Math Quiz)" required>
+    <input id="aCourse" placeholder="Course (optional)">
+    <input id="aDeadline" placeholder="Deadline (e.g. Friday, 3:00 PM)" required>
+    <select id="aLevel">
+      <option value="">Normal</option>
+      <option value="important">This week</option>
+      <option value="urgent">Urgent</option>
+    </select>
+    <button type="submit" class="action-btn">Save to database</button>
+    <div class="form-msg" id="aMsg"></div>
+  </form>`;
+}
+
+function bindAssessmentForm() {
+  document.getElementById('addAssessmentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const res = await fetch('/api/student/assessments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: document.getElementById('aTitle').value,
+        course: document.getElementById('aCourse').value,
+        deadline: document.getElementById('aDeadline').value,
+        level: document.getElementById('aLevel').value,
+      }),
+    });
+    if (res.status === 401) return showLogin();
+    if (!res.ok) { document.getElementById('aMsg').textContent = (await res.json()).error; return; }
+    await loadAssessments();
+    loadDashboard();
+  });
+}
+
+async function saveCourse(id) {
+  const scoreText = document.getElementById('score-' + id).value.trim();
+  const res = await fetch('/api/student/courses/' + id, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      progress: Number(document.getElementById('prog-' + id).value),
+      score: scoreText === '' ? null : Number(scoreText),
+    }),
+  });
+  if (res.status === 401) return showLogin();
+  if (!res.ok) { alert((await res.json()).error); return; }
+  await loadCourses();
+  loadDashboard();
+}
+
+async function deleteCourse(id, name) {
+  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  const res = await fetch('/api/student/courses/' + id, { method: 'DELETE' });
+  if (res.status === 401) return showLogin();
+  if (!res.ok) { alert((await res.json()).error); return; }
+  await loadCourses();
+  loadDashboard();
+}
+
+function courseFormHTML() {
+  return `<form class="add-form" id="addCourseForm">
+    <h3>➕ Add Course</h3>
+    <input id="cName" placeholder="Course name (e.g. Data Structures)" required>
+    <input id="cProf" placeholder="Professor (optional)">
+    <input id="cCredits" type="number" min="1" max="10" value="3" placeholder="Credits">
+    <input id="cScore" type="number" min="0" max="100" placeholder="Current score % (optional)">
+    <button type="submit" class="action-btn">Save to database</button>
+    <div class="form-msg" id="cMsg"></div>
+  </form>`;
+}
+
+function bindCourseForm() {
+  document.getElementById('addCourseForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const res = await fetch('/api/student/courses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('cName').value,
+        professor: document.getElementById('cProf').value,
+        credits: document.getElementById('cCredits').value,
+        score: document.getElementById('cScore').value,
+      }),
+    });
+    if (res.status === 401) return showLogin();
+    if (!res.ok) { document.getElementById('cMsg').textContent = (await res.json()).error; return; }
+    await loadCourses();
+    loadDashboard();
+  });
+}
+
+async function loadPerformance() {
+  try {
+    const items = await getJSON('/api/student/performance');
+    document.getElementById('perfGrid').innerHTML = items.map(p => `
+      <div class="performance-card">
+        <h4>${esc(p.name)}</h4>
+        <div class="grade ${esc(p.level)}">${esc(p.grade)} (${Number(p.score)}%)</div>
+        <div class="status">${esc(p.remark)}</div>
+      </div>`).join('') || '<p style="color:var(--muted)">No grades yet. Add a score to a course.</p>';
+  } catch (err) {
+    console.error('Failed to load performance:', err);
+  }
+}
+
+async function loadCourses() {
+  try {
+    const courses = await getJSON('/api/student/courses');
+    modalBody.innerHTML = courseFormHTML() + `<div class="courses-container">${courses.map(c => `
+      <div class="course-card">
+        <div class="course-header ${esc(c.color)}">${esc(c.badge)}</div>
+        <h3>${esc(c.name)}</h3>
+        <div class="course-prof">${esc(c.professor)}</div>
+        <div class="progress"><div class="progress-bar" style="width: ${Number(c.progress)}%;"></div></div>
+        <div class="progress-text">${Number(c.progress)}% Complete</div>
+        <div class="course-credit">${Number(c.credits)} Credits • ${Number(c.weeks)} weeks</div>
+        <div class="progress-edit"><label>Progress %<input type="number" min="0" max="100" value="${Number(c.progress)}" id="prog-${Number(c.id)}"></label><label>Score %<input type="number" min="0" max="100" value="${c.score ?? ''}" placeholder="-" id="score-${Number(c.id)}"></label><button class="action-btn" onclick="saveCourse(${Number(c.id)})">Save</button><button class="action-btn danger" data-name="${esc(c.name)}" onclick="deleteCourse(${Number(c.id)}, this.dataset.name)">Delete</button></div>
+      </div>`).join('')}</div>`;
+    bindCourseForm();
+  } catch (err) {
+    console.error('Failed to load courses:', err);
+  }
+}
+
+async function loadSchedule() {
+  try {
+    const days = await getJSON('/api/student/schedule');
+    modalBody.innerHTML = `<div class="schedule-container">${days.map(d => `
+      <div class="schedule-day">
+        <h3 class="day-name">${esc(d.day)}</h3>
+        ${d.classes.map(c => `
+          <div class="class-item">
+            <div style="flex: 1;">
+              <div class="class-name">${esc(c.name)}</div>
+              <div class="class-location">🚩 ${esc(c.room)}</div>
+            </div>
+            <div class="class-time">${esc(c.time)}</div>
+          </div>`).join('')}
+      </div>`).join('')}</div>`;
+  } catch (err) {
+    console.error('Failed to load schedule:', err);
+  }
+}
+
+async function loadAssessments() {
+  try {
+    const items = await getJSON('/api/student/assessments');
+    modalBody.innerHTML = assessmentFormHTML() + `<div class="assessments-container">${items.map(a => `
+      <div class="assessment-card ${esc(a.level)}">
+        <div class="assessment-header">
+          <h3>${esc(a.title)}</h3>
+          <span class="urgency-badge">${esc(a.badge)}</span>
+        </div>
+        <div class="assessment-details">
+          ${a.details.map(d => `<div><strong>${esc(d.label)}:</strong> ${esc(d.value)}</div>`).join('')}
+        </div>
+      </div>`).join('')}</div>`;
+    bindAssessmentForm();
+  } catch (err) {
+    console.error('Failed to load assessments:', err);
+  }
+}
+
+function openModal(type) {
+  const content = modalContents[type];
+  if (!content) return;
+  
+  modalTitle.textContent = content.title;
+  modalBody.innerHTML = content.content;
+  modalBackdrop.classList.add('show');
+  if (type === 'analytics') { loadAnalyticsStats(); loadPerformance(); }
+  if (type === 'courses') loadCourses();
+  if (type === 'schedule') loadSchedule();
+  if (type === 'assessments') loadAssessments();
+}
+
+function closeModal(event) {
+  if (event && event.target !== modalBackdrop) return;
+  modalBackdrop.classList.remove('show');
+}
+
+// ===========================
+// CHAT SYSTEM
+// ===========================
+const chatWindow = document.getElementById('chatWindow');
+const chatForm = document.getElementById('chatForm');
+const chatInput = document.getElementById('chatInput');
+
+// Initial greeting
+function initChat() {
+  addMessage('Hello! I\'m your AI Tutor. How can I help you today? 👋', 'bot');
+}
+
+function addMessage(text, sender = 'bot') {
+  const msg = document.createElement('div');
+  msg.className = `message ${sender}`;
+  
+  if (sender === 'bot') {
+    msg.innerHTML = `
+      <div class="avatar small">AI</div>
+      <div class="bubble">${text}</div>
+    `;
+  } else {
+    msg.innerHTML = `<div class="bubble">${text}</div>`;
+  }
+  
+  chatWindow.appendChild(msg);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function generateResponse(text) {
+  text = text.toLowerCase();
+  
+  if (text.includes('hello') || text.includes('hi')) {
+    return 'Hello! I\'m here to help with your studies. What do you need? 😊';
+  }
+  if (text.includes('deadline') || text.includes('due')) {
+    return 'You have 3 upcoming deadlines: Database Systems (today), Algorithms Quiz (tomorrow), and DB Lab (Friday). Click Assessments to see details!';
+  }
+  if (text.includes('schedule') || text.includes('class')) {
+    return 'Your classes are on Mon, Tue, and Wed. Check the Schedule for full details!';
+  }
+  if (text.includes('gpa') || text.includes('grade')) {
+    return 'Your GPA is 3.88 - excellent! Database: A (91%), Data Structures: B+ (82%), AI: B (74%).';
+  }
+  if (text.includes('study') || text.includes('help')) {
+    return 'I can help with coursework, quiz prep, study tips, and more! What subject?';
+  }
+  
+  return 'Great question! Can you tell me more? I\'m here to help! 💡';
+}
+
+function handleChatSubmit(e) {
+  e.preventDefault();
+  const msg = chatInput.value.trim();
+  if (!msg) return;
+  
+  addMessage(msg, 'user');
+  chatInput.value = '';
+  
+  setTimeout(() => {
+    const response = generateResponse(msg);
+    addMessage(response, 'bot');
+  }, 500);
+}
+
+chatForm.addEventListener('submit', handleChatSubmit);
+
+// Quick chips
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const text = chip.textContent;
+    addMessage(text, 'user');
+    setTimeout(() => {
+      addMessage(generateResponse(text), 'bot');
+    }, 500);
+  });
+});
+
+// ===========================
+// LOGIN + MAIN PAGE DATA
+// ===========================
+const loginScreen = document.getElementById('loginScreen');
+
+function showLogin(msg) {
+  modalBackdrop.classList.remove('show');
+  document.getElementById('loginError').textContent = msg || '';
+  loginScreen.hidden = false;
+  showRegisterForm(false);
+}
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: document.getElementById('loginUser').value,
+        password: document.getElementById('loginPass').value,
+      }),
+    });
+    if (!res.ok) return showLogin((await res.json()).error || 'Login failed');
+    document.getElementById('loginPass').value = '';
+    loginScreen.hidden = true;
+    await loadDashboard();
+  } catch (err) {
+    showLogin('Cannot reach the server. Is it running?');
+  }
+});
+
+function showRegisterForm(show) {
+  document.getElementById('loginForm').hidden = show;
+  document.getElementById('registerForm').hidden = !show;
+  document.getElementById('regError').textContent = '';
+}
+document.getElementById('showRegister').addEventListener('click', () => showRegisterForm(true));
+document.getElementById('showLogin').addEventListener('click', () => showRegisterForm(false));
+
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errBox = document.getElementById('regError');
+  try {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fullName: document.getElementById('regName').value,
+        program: document.getElementById('regProgram').value,
+        username: document.getElementById('regUser').value,
+        password: document.getElementById('regPass').value,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) { errBox.textContent = data.error || 'Registration failed'; return; }
+    document.getElementById('regPass').value = '';
+    loginScreen.hidden = true;
+    await loadDashboard();
+  } catch (err) {
+    errBox.textContent = 'Cannot reach the server. Is it running?';
+  }
+});
+
+async function logout() {
+  await fetch('/api/logout', { method: 'POST' });
+  showLogin();
+}
+
+async function loadDashboard() {
+  try {
+    const d = await getJSON('/api/student/dashboard');
+    const s = d.stats;
+    const hour = new Date().getHours();
+    const greet = hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening';
+    document.getElementById('greeting').textContent = `${greet}, ${d.profile.fullName}`;
+    document.getElementById('profAvatar').textContent = d.profile.initials;
+    document.getElementById('profName').textContent = d.profile.fullName.split(' ')[0];
+    document.getElementById('profProgram').textContent = d.profile.program;
+    document.getElementById('streakDays').textContent = `${s.streak} Days`;
+
+    document.getElementById('statsGrid').innerHTML = `
+      <div class="stat-card" onclick="addMessage('What is my current GWA?', 'user')">
+        <p>Current GWA</p><h3>${s.gwa.toFixed(2)}</h3><span class="trend up">+${s.gwaChange}</span></div>
+      <div class="stat-card" onclick="addMessage('How many courses have I completed?', 'user')">
+        <p>Courses Done</p><h3>${s.coursesDone}/${s.coursesTotal}</h3><span class="trend up">+${s.coursesChange} this term</span></div>
+      <div class="stat-card" onclick="addMessage('How many assignments do I have?', 'user')">
+        <p>Assignments</p><h3>${String(s.assignments).padStart(2, '0')}</h3><span class="trend danger">${s.assignmentsDue} due soon</span></div>
+      <div class="stat-card" onclick="addMessage('How much have I studied this week?', 'user')">
+        <p>Study Time</p><h3>${s.studyHours}h</h3><span class="trend up">+${s.studyChange}h this week</span></div>`;
+
+    document.getElementById('courseList').innerHTML = d.courses.map(c => `
+      <div class="course-item" onclick="openModal('courses')">
+        <div class="course-info">
+          <div class="course-badge ${esc(c.color)}">${esc(c.badge)}</div>
+          <div><h3>${esc(c.name)}</h3><small>${esc(c.professor)}</small></div>
+        </div>
+        <div class="course-meta">
+          <span>${Number(c.progress)}%</span>
+          <div class="progress"><div class="progress-bar" style="width: ${Number(c.progress)}%;"></div></div>
+        </div>
+      </div>`).join('') || '<p style="color:var(--muted);font-size:.85rem">No courses yet.</p>';
+
+    document.getElementById('taskList').innerHTML = d.tasks.map(t => `
+      <li onclick="openModal('assessments')">
+        <div class="task-dot ${esc(t.dot)}"></div>
+        <div><strong>${esc(t.title)}</strong><small>Due ${esc(t.due)}</small></div>
+      </li>`).join('') || '<li style="color:var(--muted);font-size:.85rem">No tasks yet.</li>';
+
+    document.getElementById('weekBars').innerHTML = d.week.map(w => `
+      <div class="bar-group"><div class="bar" style="height: ${Number(w.pct)}%;"></div><label>${esc(w.day)}</label></div>`).join('');
+  } catch (err) {
+    console.error('Failed to load dashboard:', err);
+  }
+}
+
+async function initApp() {
+  try {
+    const res = await fetch('/api/me');
+    if (!res.ok) return showLogin();
+    await loadDashboard();
+  } catch (err) {
+    showLogin('Cannot reach the server. Is it running?');
+  }
+}
+
+// Initialize
+initChat();
+initApp();
+  </script>
+</body>
+</html>
